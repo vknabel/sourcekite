@@ -10,8 +10,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef LLVM_SOURCEKITD_SOURCEKITD_H
-#define LLVM_SOURCEKITD_SOURCEKITD_H
+#ifndef SOURCEKITDEXPORTS_H
+#define SOURCEKITDEXPORTS_H
 
 #include <stddef.h>
 #include <stdint.h>
@@ -28,61 +28,62 @@
 #define SOURCEKITD_VERSION_MINOR 3
 
 #define SOURCEKITD_VERSION_ENCODE(major, minor) ( \
-      ((major) * 10000)                           \
-    + ((minor) *     1))
+    ((major)*10000) + ((minor)*1))
 
 #define SOURCEKITD_VERSION SOURCEKITD_VERSION_ENCODE( \
     SOURCEKITD_VERSION_MAJOR,                         \
     SOURCEKITD_VERSION_MINOR)
 
-#define SOURCEKITD_VERSION_STRINGIZE_(major, minor)   \
-    #major"."#minor
-#define SOURCEKITD_VERSION_STRINGIZE(major, minor)    \
-    SOURCEKITD_VERSION_STRINGIZE_(major, minor)
+#define SOURCEKITD_VERSION_STRINGIZE_(major, minor) \
+#major "." #minor
+#define SOURCEKITD_VERSION_STRINGIZE(major, minor) \
+  SOURCEKITD_VERSION_STRINGIZE_(major, minor)
 
 #define SOURCEKITD_VERSION_STRING SOURCEKITD_VERSION_STRINGIZE( \
     SOURCEKITD_VERSION_MAJOR,                                   \
     SOURCEKITD_VERSION_MINOR)
 
-#ifdef  __cplusplus
-# define SOURCEKITD_BEGIN_DECLS  extern "C" {
-# define SOURCEKITD_END_DECLS    }
+#ifdef __cplusplus
+#define SOURCEKITD_BEGIN_DECLS \
+  extern "C"                   \
+  {
+#define SOURCEKITD_END_DECLS }
 #else
-# define SOURCEKITD_BEGIN_DECLS
-# define SOURCEKITD_END_DECLS
+#define SOURCEKITD_BEGIN_DECLS
+#define SOURCEKITD_END_DECLS
 #endif
 
 #ifndef SOURCEKITD_PUBLIC
-# if defined (_MSC_VER)
-#  define SOURCEKITD_PUBLIC __declspec(dllimport)
-# else
-#  define SOURCEKITD_PUBLIC
-# endif
+#if defined(_MSC_VER)
+#define SOURCEKITD_PUBLIC __declspec(dllimport)
+#else
+#define SOURCEKITD_PUBLIC
+#endif
 #endif
 
 #ifndef __has_feature
-# define __has_feature(x) 0
+#define __has_feature(x) 0
 #endif
 
 #if __has_feature(blocks)
-# define SOURCEKITD_HAS_BLOCKS 1
+#define SOURCEKITD_HAS_BLOCKS 1
 #else
-# define SOURCEKITD_HAS_BLOCKS 0
+#define SOURCEKITD_HAS_BLOCKS 0
 #endif
 
 #ifdef __GNUC__
-# define SOURCEKITD_WARN_RESULT __attribute__((__warn_unused_result__))
-# define SOURCEKITD_NONNULL1 __attribute__((__nonnull__(1)))
-# define SOURCEKITD_NONNULL2 __attribute__((__nonnull__(2)))
-# define SOURCEKITD_NONNULL3 __attribute__((__nonnull__(3)))
-# define SOURCEKITD_NONNULL_ALL __attribute__((__nonnull__))
-# define SOURCEKITD_DEPRECATED(m) __attribute__((deprecated(m)))
+#define SOURCEKITD_WARN_RESULT __attribute__((__warn_unused_result__))
+#define SOURCEKITD_NONNULL1 __attribute__((__nonnull__(1)))
+#define SOURCEKITD_NONNULL2 __attribute__((__nonnull__(2)))
+#define SOURCEKITD_NONNULL3 __attribute__((__nonnull__(3)))
+#define SOURCEKITD_NONNULL_ALL __attribute__((__nonnull__))
+#define SOURCEKITD_DEPRECATED(m) __attribute__((deprecated(m)))
 #else
-# define SOURCEKITD_WARN_RESULT
-# define SOURCEKITD_NONNULL1
-# define SOURCEKITD_NONNULL2
-# define SOURCEKITD_NONNULL3
-# define SOURCEKITD_NONNULL_ALL
+#define SOURCEKITD_WARN_RESULT
+#define SOURCEKITD_NONNULL1
+#define SOURCEKITD_NONNULL2
+#define SOURCEKITD_NONNULL3
+#define SOURCEKITD_NONNULL_ALL
 #endif
 
 SOURCEKITD_BEGIN_DECLS
@@ -97,8 +98,7 @@ SOURCEKITD_BEGIN_DECLS
 /// \c sourcekitd_initialize does not need to be called again even if the
 /// service crashes.
 SOURCEKITD_PUBLIC
-void
-sourcekitd_initialize(void);
+void sourcekitd_initialize(void);
 
 /// \brief Deallocates structures needed across the rest of the sourcekitd API.
 ///
@@ -108,12 +108,11 @@ sourcekitd_initialize(void);
 /// Calling \c sourcekitd_shutdown without a matching \c sourcekitd_initialize
 /// is undefined.
 SOURCEKITD_PUBLIC
-void
-sourcekitd_shutdown(void);
+void sourcekitd_shutdown(void);
 
 #if SOURCEKITD_HAS_BLOCKS
 
-typedef void(^sourcekitd_interrupted_connection_handler_t)(void);
+typedef void (^sourcekitd_interrupted_connection_handler_t)(void);
 
 /// \brief Sets the handler which should be called whenever the connection to
 /// SourceKit is interrupted.
@@ -126,10 +125,9 @@ typedef void(^sourcekitd_interrupted_connection_handler_t)(void);
 ///
 /// \param handler Interrupted connection handler to use. Pass NULL to remove
 /// the handler.
-SOURCEKITD_PUBLIC SOURCEKITD_NONNULL_ALL
-void
+SOURCEKITD_PUBLIC SOURCEKITD_NONNULL_ALL void
 sourcekitd_set_interrupted_connection_handler(
-                           sourcekitd_interrupted_connection_handler_t handler);
+    sourcekitd_interrupted_connection_handler_t handler);
 
 #endif
 
@@ -143,22 +141,21 @@ typedef struct sourcekitd_uid_s *sourcekitd_uid_t;
 
 /// \brief Create a \c sourcekitd_uid_t from a C string.
 SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1 SOURCEKITD_WARN_RESULT
-sourcekitd_uid_t
-sourcekitd_uid_get_from_cstr(const char *string);
+    sourcekitd_uid_t
+    sourcekitd_uid_get_from_cstr(const char *string);
 
 /// \brief Create a \c sourcekitd_uid_t from a string buffer.
 SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1 SOURCEKITD_WARN_RESULT
-sourcekitd_uid_t
-sourcekitd_uid_get_from_buf(const char *buf, size_t length);
+    sourcekitd_uid_t
+    sourcekitd_uid_get_from_buf(const char *buf, size_t length);
 
 /// \brief Get the length of the string associated with a \c sourcekitd_uid_t.
 SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1 SOURCEKITD_WARN_RESULT
-size_t
-sourcekitd_uid_get_length(sourcekitd_uid_t obj);
+    size_t
+    sourcekitd_uid_get_length(sourcekitd_uid_t obj);
 
 /// \brief Get the C string pointer associated with a \c sourcekitd_uid_t.
-SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1 SOURCEKITD_WARN_RESULT
-const char *
+SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1 SOURCEKITD_WARN_RESULT const char *
 sourcekitd_uid_get_string_ptr(sourcekitd_uid_t obj);
 
 /// \defgroup Request API
@@ -169,44 +166,38 @@ sourcekitd_uid_get_string_ptr(sourcekitd_uid_t obj);
 typedef void *sourcekitd_object_t;
 
 SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1
-sourcekitd_object_t
-sourcekitd_request_retain(sourcekitd_object_t object);
+    sourcekitd_object_t
+    sourcekitd_request_retain(sourcekitd_object_t object);
 
-SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1
-void
+SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1 void
 sourcekitd_request_release(sourcekitd_object_t object);
 
 SOURCEKITD_PUBLIC SOURCEKITD_WARN_RESULT
-sourcekitd_object_t
-sourcekitd_request_dictionary_create(const sourcekitd_uid_t *keys,
-                                     const sourcekitd_object_t *values,
-                                     size_t count);
+    sourcekitd_object_t
+    sourcekitd_request_dictionary_create(const sourcekitd_uid_t *keys,
+                                         const sourcekitd_object_t *values,
+                                         size_t count);
 
-SOURCEKITD_PUBLIC SOURCEKITD_NONNULL_ALL
-void
+SOURCEKITD_PUBLIC SOURCEKITD_NONNULL_ALL void
 sourcekitd_request_dictionary_set_value(sourcekitd_object_t dict,
                                         sourcekitd_uid_t key,
                                         sourcekitd_object_t value);
 
-SOURCEKITD_PUBLIC SOURCEKITD_NONNULL_ALL
-void
+SOURCEKITD_PUBLIC SOURCEKITD_NONNULL_ALL void
 sourcekitd_request_dictionary_set_string(sourcekitd_object_t dict,
                                          sourcekitd_uid_t key,
                                          const char *string);
 
-SOURCEKITD_PUBLIC SOURCEKITD_NONNULL_ALL
-void
+SOURCEKITD_PUBLIC SOURCEKITD_NONNULL_ALL void
 sourcekitd_request_dictionary_set_stringbuf(sourcekitd_object_t dict,
                                             sourcekitd_uid_t key,
                                             const char *buf, size_t length);
 
-SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1 SOURCEKITD_NONNULL2
-void
+SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1 SOURCEKITD_NONNULL2 void
 sourcekitd_request_dictionary_set_int64(sourcekitd_object_t dict,
                                         sourcekitd_uid_t key, int64_t val);
 
-SOURCEKITD_PUBLIC SOURCEKITD_NONNULL_ALL
-void
+SOURCEKITD_PUBLIC SOURCEKITD_NONNULL_ALL void
 sourcekitd_request_dictionary_set_uid(sourcekitd_object_t dict,
                                       sourcekitd_uid_t key,
                                       sourcekitd_uid_t uid);
@@ -214,46 +205,41 @@ sourcekitd_request_dictionary_set_uid(sourcekitd_object_t dict,
 #define SOURCEKITD_ARRAY_APPEND ((size_t)(-1))
 
 SOURCEKITD_PUBLIC SOURCEKITD_WARN_RESULT
-sourcekitd_object_t
-sourcekitd_request_array_create(const sourcekitd_object_t *objects,
-                                size_t count);
+    sourcekitd_object_t
+    sourcekitd_request_array_create(const sourcekitd_object_t *objects,
+                                    size_t count);
 
-SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1 SOURCEKITD_NONNULL3
-void
+SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1 SOURCEKITD_NONNULL3 void
 sourcekitd_request_array_set_value(sourcekitd_object_t array, size_t index,
                                    sourcekitd_object_t value);
 
-SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1 SOURCEKITD_NONNULL3
-void
+SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1 SOURCEKITD_NONNULL3 void
 sourcekitd_request_array_set_string(sourcekitd_object_t array, size_t index,
                                     const char *string);
 
-SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1 SOURCEKITD_NONNULL3
-void
+SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1 SOURCEKITD_NONNULL3 void
 sourcekitd_request_array_set_stringbuf(sourcekitd_object_t array, size_t index,
                                        const char *buf, size_t length);
 
-SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1
-void
+SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1 void
 sourcekitd_request_array_set_int64(sourcekitd_object_t array, size_t index,
                                    int64_t val);
 
-SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1 SOURCEKITD_NONNULL3
-void
+SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1 SOURCEKITD_NONNULL3 void
 sourcekitd_request_array_set_uid(sourcekitd_object_t array, size_t index,
                                  sourcekitd_uid_t uid);
 
 SOURCEKITD_PUBLIC SOURCEKITD_WARN_RESULT
-sourcekitd_object_t
-sourcekitd_request_int64_create(int64_t val);
+    sourcekitd_object_t
+    sourcekitd_request_int64_create(int64_t val);
 
 SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1 SOURCEKITD_WARN_RESULT
-sourcekitd_object_t
-sourcekitd_request_string_create(const char *string);
+    sourcekitd_object_t
+    sourcekitd_request_string_create(const char *string);
 
 SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1 SOURCEKITD_WARN_RESULT
-sourcekitd_object_t
-sourcekitd_request_uid_create(sourcekitd_uid_t uid);
+    sourcekitd_object_t
+    sourcekitd_request_uid_create(sourcekitd_uid_t uid);
 
 /// \brief Creates a request object by parsing the provided string in YAML
 /// format.
@@ -266,20 +252,18 @@ sourcekitd_request_uid_create(sourcekitd_uid_t uid);
 ///
 /// \returns A sourcekitd_object_t instance or NULL if parsing fails.
 SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1 SOURCEKITD_WARN_RESULT
-sourcekitd_object_t
-sourcekitd_request_create_from_yaml(const char *yaml, char **error);
+    sourcekitd_object_t
+    sourcekitd_request_create_from_yaml(const char *yaml, char **error);
 
 /// \brief Prints to stderr a string representation of the request object in
 /// YAML format.
-SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1
-void
+SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1 void
 sourcekitd_request_description_dump(sourcekitd_object_t obj);
 
 /// \brief Copies a string representation of the request object in YAML format.
 /// \returns A string representation of the request object. This string should
 /// be disposed of with \c free when done.
-SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1
-char *
+SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1 char *
 sourcekitd_request_description_copy(sourcekitd_object_t obj);
 
 /// @}
@@ -298,11 +282,13 @@ typedef void *sourcekitd_response_t;
 /// \brief A value of the response object.
 ///
 /// Its lifetime is tied to the sourcekitd_response_t object that it came from.
-typedef struct {
+typedef struct
+{
   uint64_t data[3];
 } sourcekitd_variant_t;
 
-typedef enum {
+typedef enum
+{
   SOURCEKITD_VARIANT_TYPE_NULL = 0,
   SOURCEKITD_VARIANT_TYPE_DICTIONARY = 1,
   SOURCEKITD_VARIANT_TYPE_ARRAY = 2,
@@ -312,20 +298,19 @@ typedef enum {
   SOURCEKITD_VARIANT_TYPE_BOOL = 6
 } sourcekitd_variant_type_t;
 
-typedef enum {
+typedef enum
+{
   SOURCEKITD_ERROR_CONNECTION_INTERRUPTED = 1,
   SOURCEKITD_ERROR_REQUEST_INVALID = 2,
   SOURCEKITD_ERROR_REQUEST_FAILED = 3,
   SOURCEKITD_ERROR_REQUEST_CANCELLED = 4
 } sourcekitd_error_t;
 
-SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1
-void
+SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1 void
 sourcekitd_response_dispose(sourcekitd_response_t obj);
 
 /// \brief Returns true if the given response is an error.
-SOURCEKITD_PUBLIC SOURCEKITD_NONNULL_ALL SOURCEKITD_WARN_RESULT
-bool
+SOURCEKITD_PUBLIC SOURCEKITD_NONNULL_ALL SOURCEKITD_WARN_RESULT bool
 sourcekitd_response_is_error(sourcekitd_response_t obj);
 
 /// \brief Returns the error kind given a response error.
@@ -333,38 +318,36 @@ sourcekitd_response_is_error(sourcekitd_response_t obj);
 /// Passing a response object that is not an error will result in undefined
 /// behavior.
 SOURCEKITD_PUBLIC SOURCEKITD_NONNULL_ALL SOURCEKITD_WARN_RESULT
-sourcekitd_error_t
-sourcekitd_response_error_get_kind(sourcekitd_response_t err);
+    sourcekitd_error_t
+    sourcekitd_response_error_get_kind(sourcekitd_response_t err);
 
 /// \brief Returns a C string of the error description.
 ///
 /// Passing a response object that is not an error will result in undefined
 /// behavior.
-SOURCEKITD_PUBLIC SOURCEKITD_NONNULL_ALL SOURCEKITD_WARN_RESULT
-const char *
+SOURCEKITD_PUBLIC SOURCEKITD_NONNULL_ALL SOURCEKITD_WARN_RESULT const char *
 sourcekitd_response_error_get_description(sourcekitd_response_t err);
 
 /// \brief Returns the value contained in the response.
 ///
 /// If the response is an error it will return a null variant.
 SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1 SOURCEKITD_WARN_RESULT
-sourcekitd_variant_t
-sourcekitd_response_get_value(sourcekitd_response_t resp);
+    sourcekitd_variant_t
+    sourcekitd_response_get_value(sourcekitd_response_t resp);
 
 SOURCEKITD_PUBLIC SOURCEKITD_NONNULL_ALL SOURCEKITD_WARN_RESULT
-sourcekitd_variant_type_t
-sourcekitd_variant_get_type(sourcekitd_variant_t obj);
+    sourcekitd_variant_type_t
+    sourcekitd_variant_get_type(sourcekitd_variant_t obj);
 
 SOURCEKITD_PUBLIC SOURCEKITD_NONNULL2 SOURCEKITD_WARN_RESULT
-sourcekitd_variant_t
-sourcekitd_variant_dictionary_get_value(sourcekitd_variant_t dict,
-                                        sourcekitd_uid_t key);
+    sourcekitd_variant_t
+    sourcekitd_variant_dictionary_get_value(sourcekitd_variant_t dict,
+                                            sourcekitd_uid_t key);
 
 /// The underlying C string for the specified key. NULL if the value for the
 /// specified key is not a C string value or if there is no value for the
 /// specified key.
-SOURCEKITD_PUBLIC SOURCEKITD_NONNULL_ALL SOURCEKITD_WARN_RESULT
-const char *
+SOURCEKITD_PUBLIC SOURCEKITD_NONNULL_ALL SOURCEKITD_WARN_RESULT const char *
 sourcekitd_variant_dictionary_get_string(sourcekitd_variant_t dict,
                                          sourcekitd_uid_t key);
 
@@ -372,15 +355,14 @@ sourcekitd_variant_dictionary_get_string(sourcekitd_variant_t dict,
 /// value for the specified key is not an integer value or if there is no
 /// value for the specified key.
 SOURCEKITD_PUBLIC SOURCEKITD_NONNULL_ALL SOURCEKITD_WARN_RESULT
-int64_t
-sourcekitd_variant_dictionary_get_int64(sourcekitd_variant_t dict,
-                                        sourcekitd_uid_t key);
+    int64_t
+    sourcekitd_variant_dictionary_get_int64(sourcekitd_variant_t dict,
+                                            sourcekitd_uid_t key);
 
 /// The underlying \c bool value for the specified key. false if the
 /// value for the specified key is not a Boolean value or if there is no
 /// value for the specified key.
-SOURCEKITD_PUBLIC SOURCEKITD_NONNULL_ALL SOURCEKITD_WARN_RESULT
-bool
+SOURCEKITD_PUBLIC SOURCEKITD_NONNULL_ALL SOURCEKITD_WARN_RESULT bool
 sourcekitd_variant_dictionary_get_bool(sourcekitd_variant_t dict,
                                        sourcekitd_uid_t key);
 
@@ -388,9 +370,9 @@ sourcekitd_variant_dictionary_get_bool(sourcekitd_variant_t dict,
 /// value for the specified key is not a uid value or if there is no
 /// value for the specified key.
 SOURCEKITD_PUBLIC SOURCEKITD_NONNULL_ALL SOURCEKITD_WARN_RESULT
-sourcekitd_uid_t
-sourcekitd_variant_dictionary_get_uid(sourcekitd_variant_t dict,
-                                      sourcekitd_uid_t key);
+    sourcekitd_uid_t
+    sourcekitd_variant_dictionary_get_uid(sourcekitd_variant_t dict,
+                                          sourcekitd_uid_t key);
 
 #if SOURCEKITD_HAS_BLOCKS
 /// \brief A block to be invoked for every key/value pair in the dictionary.
@@ -401,16 +383,15 @@ sourcekitd_variant_dictionary_get_uid(sourcekitd_variant_t dict,
 ///
 /// \returns true to indicate that iteration should continue.
 typedef bool (^sourcekitd_variant_dictionary_applier_t)(sourcekitd_uid_t key,
-                                                    sourcekitd_variant_t value);
+                                                        sourcekitd_variant_t value);
 
 /// \brief Invokes the given block for every key/value pair in the dictionary.
 ///
 /// \returns true to indicate that iteration of the dictionary completed
 /// successfully. Iteration will only fail if the applier block returns false.
-SOURCEKITD_PUBLIC SOURCEKITD_NONNULL_ALL
-bool
+SOURCEKITD_PUBLIC SOURCEKITD_NONNULL_ALL bool
 sourcekitd_variant_dictionary_apply(sourcekitd_variant_t dict,
-                               sourcekitd_variant_dictionary_applier_t applier);
+                                    sourcekitd_variant_dictionary_applier_t applier);
 #endif
 
 /// \brief A function to be invoked for every key/value pair in the dictionary.
@@ -421,43 +402,40 @@ sourcekitd_variant_dictionary_apply(sourcekitd_variant_t dict,
 ///
 /// \returns true to indicate that iteration should continue.
 typedef bool (*sourcekitd_variant_dictionary_applier_f_t)(sourcekitd_uid_t key,
-                                                    sourcekitd_variant_t value,
-                                                    void *context);
+                                                          sourcekitd_variant_t value,
+                                                          void *context);
 
 /// \brief Invokes the given function for every key/value pair in the
 /// dictionary.
 ///
 /// \returns true to indicate that iteration of the dictionary completed
 /// successfully. Iteration will only fail if the applier block returns 0.
-SOURCEKITD_PUBLIC SOURCEKITD_NONNULL2
-bool
+SOURCEKITD_PUBLIC SOURCEKITD_NONNULL2 bool
 sourcekitd_variant_dictionary_apply_f(sourcekitd_variant_t dict,
-                              sourcekitd_variant_dictionary_applier_f_t applier,
-                              void *context);
+                                      sourcekitd_variant_dictionary_applier_f_t applier,
+                                      void *context);
 
 SOURCEKITD_PUBLIC SOURCEKITD_WARN_RESULT
-size_t
-sourcekitd_variant_array_get_count(sourcekitd_variant_t array);
+    size_t
+    sourcekitd_variant_array_get_count(sourcekitd_variant_t array);
 
 SOURCEKITD_PUBLIC SOURCEKITD_WARN_RESULT
-sourcekitd_variant_t
-sourcekitd_variant_array_get_value(sourcekitd_variant_t array, size_t index);
+    sourcekitd_variant_t
+    sourcekitd_variant_array_get_value(sourcekitd_variant_t array, size_t index);
 
-SOURCEKITD_PUBLIC SOURCEKITD_WARN_RESULT
-const char *
+SOURCEKITD_PUBLIC SOURCEKITD_WARN_RESULT const char *
 sourcekitd_variant_array_get_string(sourcekitd_variant_t array, size_t index);
 
 SOURCEKITD_PUBLIC SOURCEKITD_WARN_RESULT
-int64_t
-sourcekitd_variant_array_get_int64(sourcekitd_variant_t array, size_t index);
+    int64_t
+    sourcekitd_variant_array_get_int64(sourcekitd_variant_t array, size_t index);
 
-SOURCEKITD_PUBLIC SOURCEKITD_WARN_RESULT
-bool
+SOURCEKITD_PUBLIC SOURCEKITD_WARN_RESULT bool
 sourcekitd_variant_array_get_bool(sourcekitd_variant_t array, size_t index);
 
 SOURCEKITD_PUBLIC SOURCEKITD_WARN_RESULT
-sourcekitd_uid_t
-sourcekitd_variant_array_get_uid(sourcekitd_variant_t array, size_t index);
+    sourcekitd_uid_t
+    sourcekitd_variant_array_get_uid(sourcekitd_variant_t array, size_t index);
 
 #if SOURCEKITD_HAS_BLOCKS
 /// \brief A block to be invoked for every value in the array.
@@ -474,8 +452,7 @@ typedef bool (^sourcekitd_variant_array_applier_t)(size_t index,
 ///
 /// \returns true to indicate that iteration of the array completed
 /// successfully. Iteration will only fail if the applier block returns false.
-SOURCEKITD_PUBLIC SOURCEKITD_NONNULL_ALL
-bool
+SOURCEKITD_PUBLIC SOURCEKITD_NONNULL_ALL bool
 sourcekitd_variant_array_apply(sourcekitd_variant_t array,
                                sourcekitd_variant_array_applier_t applier);
 #endif
@@ -495,63 +472,55 @@ typedef bool (*sourcekitd_variant_array_applier_f_t)(size_t index,
 ///
 /// \returns true to indicate that iteration of the array completed
 /// successfully. Iteration will only fail if the applier block returns false.
-SOURCEKITD_PUBLIC SOURCEKITD_NONNULL2
-bool
+SOURCEKITD_PUBLIC SOURCEKITD_NONNULL2 bool
 sourcekitd_variant_array_apply_f(sourcekitd_variant_t array,
                                  sourcekitd_variant_array_applier_f_t applier,
                                  void *context);
 
 SOURCEKITD_PUBLIC SOURCEKITD_WARN_RESULT
-int64_t
-sourcekitd_variant_int64_get_value(sourcekitd_variant_t obj);
+    int64_t
+    sourcekitd_variant_int64_get_value(sourcekitd_variant_t obj);
 
-SOURCEKITD_PUBLIC SOURCEKITD_WARN_RESULT
-bool
+SOURCEKITD_PUBLIC SOURCEKITD_WARN_RESULT bool
 sourcekitd_variant_bool_get_value(sourcekitd_variant_t obj);
 
 SOURCEKITD_PUBLIC SOURCEKITD_WARN_RESULT
-size_t
-sourcekitd_variant_string_get_length(sourcekitd_variant_t obj);
+    size_t
+    sourcekitd_variant_string_get_length(sourcekitd_variant_t obj);
 
-SOURCEKITD_PUBLIC SOURCEKITD_WARN_RESULT
-const char *
+SOURCEKITD_PUBLIC SOURCEKITD_WARN_RESULT const char *
 sourcekitd_variant_string_get_ptr(sourcekitd_variant_t obj);
 
 SOURCEKITD_PUBLIC SOURCEKITD_WARN_RESULT
-sourcekitd_uid_t
-sourcekitd_variant_uid_get_value(sourcekitd_variant_t obj);
+    sourcekitd_uid_t
+    sourcekitd_variant_uid_get_value(sourcekitd_variant_t obj);
 
 /// \brief Prints to stderr a string representation of the response object in
 /// YAML format.
-SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1
-void
+SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1 void
 sourcekitd_response_description_dump(sourcekitd_response_t resp);
 
 /// \brief Prints to the given file descriptor a string representation of the
 /// response object.
-SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1
-void
+SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1 void
 sourcekitd_response_description_dump_filedesc(sourcekitd_response_t resp,
                                               int fd);
 
 /// \brief Copies a string representation of the response object in YAML format.
 /// \returns A string representation of the response object. This string should
 /// be disposed of with \c free when done.
-SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1
-char *
+SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1 char *
 sourcekitd_response_description_copy(sourcekitd_response_t resp);
 
 /// \brief Prints to stderr a string representation of the variant object in
 /// YAML format.
 SOURCEKITD_PUBLIC
-void
-sourcekitd_variant_description_dump(sourcekitd_variant_t obj);
+void sourcekitd_variant_description_dump(sourcekitd_variant_t obj);
 
 /// \brief Prints to the given file descriptor a string representation of the
 /// variant object.
 SOURCEKITD_PUBLIC
-void
-sourcekitd_variant_description_dump_filedesc(sourcekitd_variant_t obj, int fd);
+void sourcekitd_variant_description_dump_filedesc(sourcekitd_variant_t obj, int fd);
 
 /// \brief Copies a string representation of the variant object in YAML format.
 /// \returns A string representation of the variant object. This string should
@@ -575,8 +544,8 @@ sourcekitd_variant_json_description_copy(sourcekitd_variant_t obj);
 /// and should invoke \c sourcekitd_response_dispose on it when it is done with
 /// it.
 SOURCEKITD_PUBLIC SOURCEKITD_NONNULL_ALL SOURCEKITD_WARN_RESULT
-sourcekitd_response_t
-sourcekitd_send_request_sync(sourcekitd_object_t req);
+    sourcekitd_response_t
+    sourcekitd_send_request_sync(sourcekitd_object_t req);
 
 /// \brief Used to cancel a request that has been invoked asynchronously.
 typedef void *sourcekitd_request_handle_t;
@@ -596,8 +565,7 @@ typedef void (^sourcekitd_response_receiver_t)(sourcekitd_response_t resp);
 /// \c sourcekitd_request_handle_t will be stored. Can be NULL.
 ///
 /// \param receiver the block that will receive the response object.
-SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1
-void
+SOURCEKITD_PUBLIC SOURCEKITD_NONNULL1 void
 sourcekitd_send_request(sourcekitd_object_t req,
                         sourcekitd_request_handle_t *out_handle,
                         sourcekitd_response_receiver_t receiver);
@@ -613,8 +581,7 @@ sourcekitd_send_request(sourcekitd_object_t req,
 /// Calling \c sourcekitd_cancel_request after the response object has been
 /// delivered will have no effect.
 SOURCEKITD_PUBLIC
-void
-sourcekitd_cancel_request(sourcekitd_request_handle_t handle);
+void sourcekitd_cancel_request(sourcekitd_request_handle_t handle);
 
 #if SOURCEKITD_HAS_BLOCKS
 
@@ -631,21 +598,18 @@ sourcekitd_cancel_request(sourcekitd_request_handle_t handle);
 /// \param receiver Notification handler block to use. Pass NULL to remove the
 /// previous handler that was set.
 SOURCEKITD_PUBLIC
-void
-sourcekitd_set_notification_handler(sourcekitd_response_receiver_t receiver);
+void sourcekitd_set_notification_handler(sourcekitd_response_receiver_t receiver);
 
-typedef sourcekitd_uid_t(^sourcekitd_uid_handler_t)(const char* uidStr);
+typedef sourcekitd_uid_t (^sourcekitd_uid_handler_t)(const char *uidStr);
 
-SOURCEKITD_PUBLIC SOURCEKITD_DEPRECATED("use sourcekitd_set_uid_handlers")
-void sourcekitd_set_uid_handler(sourcekitd_uid_handler_t handler);
+SOURCEKITD_PUBLIC SOURCEKITD_DEPRECATED("use sourcekitd_set_uid_handlers") void sourcekitd_set_uid_handler(sourcekitd_uid_handler_t handler);
 
-typedef sourcekitd_uid_t(^sourcekitd_uid_from_str_handler_t)(const char* uidStr);
-typedef const char *(^sourcekitd_str_from_uid_handler_t)(sourcekitd_uid_t uid);
+typedef sourcekitd_uid_t (^sourcekitd_uid_from_str_handler_t)(const char *uidStr);
+typedef const char * (^sourcekitd_str_from_uid_handler_t)(sourcekitd_uid_t uid);
 
 SOURCEKITD_PUBLIC
-void
-sourcekitd_set_uid_handlers(sourcekitd_uid_from_str_handler_t uid_from_str,
-                            sourcekitd_str_from_uid_handler_t str_from_uid);
+void sourcekitd_set_uid_handlers(sourcekitd_uid_from_str_handler_t uid_from_str,
+                                 sourcekitd_str_from_uid_handler_t str_from_uid);
 
 #endif
 

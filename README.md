@@ -15,7 +15,7 @@ clone this project, then run build command in that project as follow:
 ##### NOTE1
   change the above linking location/option to your own when necessary)
 
-##### NOTE2 
+##### NOTE2
   the sourcekitd framework are not included in the the default official download. You can try a binary [here](https://github.com/norio-nomura/docker-sourcekit-builder/releases) with sourcekitd included, but note this is built in Ubuntu 16.04)
 
 ##### NOTE3
@@ -26,7 +26,7 @@ clone this project, then run build command in that project as follow:
   4. set "swift.path.sourcekiteDockerMode" to true. Note, now the setting "swift.path.sourcekite" will be ignored.
 
 ### for MacOS
-> swift build -Xswiftc -framework -Xswiftc sourcekitd -Xswiftc -F -Xswiftc /Library/Developer/Toolchains/swift-latest.xctoolchain/usr/lib -Xlinker -rpath -Xlinker /Library/Developer/Toolchains/swift-latest.xctoolchain/usr/lib
+> make install LIB_DIR=/Library/Developer/Toolchains/swift-latest.xctoolchain/usr/lib
 
 (NOTE: make sure you have installed the swift toolchain into that location. You can do this via [download from offical site](https://swift.org/download/#snapshots) or [swiftenv](https://swiftenv.fuller.li))
 

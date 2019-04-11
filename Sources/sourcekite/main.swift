@@ -5,27 +5,27 @@ import sourcekitd
     import Darwin.C
 #endif
 
-//assumption:single-thread
+// assumption:single-thread
 
 enum ParsingState {
     case endRequest
-    case startRequestContent    
+    case startRequestContent
 }
 
-func printResponse(forRequest reqid: Int, _ resp: sourcekitd_response_t) -> Bool  {
-    print(reqid) 
+func printResponse(forRequest reqid: Int, _ resp: sourcekitd_response_t) -> Bool {
+    print(reqid)
     let IsError = sourcekitd_response_is_error(resp)
     // if (IsError) {//TODO
     // sourcekitd_response_description_dump(resp)
     // } else {
-    let respCStr:UnsafeMutablePointer<Int8>! = 
+    let respCStr: UnsafeMutablePointer<Int8>! =
         sourcekitd_response_description_copy(resp)
     let rsp = String(cString: respCStr)
     print(rsp)
     // }
     print("")
-    
-    fflush(stdout)//workaround for swift print
+
+    fflush(stdout) // workaround for swift print
     sourcekitd_response_dispose(resp)
     free(respCStr)
     return IsError
@@ -47,7 +47,7 @@ while let input = readLine() {
         guard let id = Int(input) else {
             debugLog("wrong format for reqid")
             hasError = true
-            break 
+            break
         }
         reqid = id
         state = .startRequestContent
@@ -55,19 +55,17 @@ while let input = readLine() {
         if input == "" {
             debugLog("requestContent: \(requestContent)")
             let req: sourcekitd_object_t =
-                sourcekitd_request_create_from_yaml(requestContent, nil);
+                sourcekitd_request_create_from_yaml(requestContent, nil)
             let resp: sourcekitd_response_t = sourcekitd_send_request_sync(req)
             hasError = printResponse(forRequest: reqid, resp)
             debugLog("hasError: \(hasError)")
-            //reset all state
-            (hasError, requestContent, reqid, state) = 
-                (false,   "",            -1,   ParsingState.endRequest)
+            // reset all state
+            (hasError, requestContent, reqid, state) =
+                (false, "", -1, ParsingState.endRequest)
         } else {
             requestContent += input
         }
     }
-}//FIXME
-
+} // FIXME:
 
 sourcekitd_shutdown()
-
