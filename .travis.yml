@@ -8,32 +8,32 @@ matrix:
     - os: osx
       osx_image: xcode10
       script:
-        - make LIB_DIR=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib
+        - make
 
     - os: osx
       osx_image: xcode9.4
       script:
-        - make LIB_DIR=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib
+        - make
 
     - os: osx
       osx_image: xcode9.3
       script:
-        - make LIB_DIR=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib
+        - make
 
     - os: osx
       osx_image: xcode9.2
       script:
-        - make LIB_DIR=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib
+        - make
 
     - os: osx
       osx_image: xcode9.1
       script:
-        - make LIB_DIR=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib
+        - make
 
     - os: osx
       osx_image: xcode9
       script:
-        - make LIB_DIR=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib
+        - make
 
     - os: osx
       osx_image: xcode9
@@ -42,7 +42,7 @@ matrix:
       install:
         - eval "$(curl -sL https://swiftenv.fuller.li/install.sh)"
       script:
-        - make LIB_DIR=/Library/Developer/Toolchains/swift-latest.xctoolchain/usr/lib
+        - make
 
     - os: osx
       osx_image: xcode9
@@ -51,7 +51,7 @@ matrix:
       install:
         - eval "$(curl -sL https://swiftenv.fuller.li/install.sh)"
       script:
-        - make LIB_DIR=/Library/Developer/Toolchains/swift-latest.xctoolchain/usr/lib
+        - make
 
     - os: linux
       env:
@@ -62,7 +62,7 @@ matrix:
         - sudo ln -s $SWIFTENV_ROOT/versions/$SWIFT_VERSION/usr/lib/libsourcekitdInProc.so /usr/lib/sourcekitdInProc
         - sudo ldconfig
       script:
-        - swift build -Xlinker -l:sourcekitdInProc -c release
+        - make
 
     - os: linux
       env:
@@ -73,7 +73,7 @@ matrix:
         - sudo ln -s $SWIFTENV_ROOT/versions/$SWIFT_VERSION/usr/lib/libsourcekitdInProc.so /usr/lib/sourcekitdInProc
         - sudo ldconfig
       script:
-        - swift build -Xlinker -l:sourcekitdInProc -c release
+        - make
 
     - os: linux
       env:
@@ -84,7 +84,7 @@ matrix:
         - sudo ln -s $SWIFTENV_ROOT/versions/$SWIFT_VERSION/usr/lib/libsourcekitdInProc.so /usr/lib/sourcekitdInProc
         - sudo ldconfig
       script:
-        - swift build -Xlinker -l:sourcekitdInProc -c release
+        - make
 
     - os: linux
       env:
@@ -95,7 +95,7 @@ matrix:
         - sudo ln -s $SWIFTENV_ROOT/versions/$SWIFT_VERSION/usr/lib/libsourcekitdInProc.so /usr/lib/sourcekitdInProc
         - sudo ldconfig
       script:
-        - swift build -Xlinker -l:sourcekitdInProc -c release
+        - make
 
     - os: linux
       env:
@@ -106,4 +106,4 @@ matrix:
         - sudo ln -s $SWIFTENV_ROOT/versions/$SWIFT_VERSION/usr/lib/libsourcekitdInProc.so /usr/lib/sourcekitdInProc
         - sudo ldconfig
       script:
-        - swift build -Xlinker -l:sourcekitdInProc -c release
+        - make

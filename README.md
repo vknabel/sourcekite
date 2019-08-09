@@ -9,13 +9,14 @@ clone this project, then run build command in that project as follow:
 
 ### for Linux
 > sudo ln -s /usr/lib/sourcekitdInProc.framework/sourcekitdInProc /usr/lib/sourcekitdInProc
-
-> swift build -Xlinker -l:sourcekitdInProc
+> make install
 
 change the above linking location/option to your own when necessary)
 
+For more information see [jpsim/SourceKitten#how-is-sourcekit-resolved](https://github.com/jpsim/SourceKitten#how-is-sourcekit-resolved).
+
 ### for MacOS
-> make install LIB_DIR=/Library/Developer/Toolchains/swift-latest.xctoolchain/usr/lib
+> make install
 
 (NOTE: make sure you have installed the swift toolchain into that location. You can do this via [download from offical site](https://swift.org/download/#snapshots) or [swiftenv](https://swiftenv.fuller.li))
 
@@ -23,7 +24,7 @@ Finally set "swift.path.sourcekite" in vscode to let SDE know the location of th
 
 ```javascript
 {
-    "swift.path.sourcekite": "/path/to/repo/sourcekite/.build/debug/sourcekite"
+    "swift.path.sourcekite": "/path/to/repo/sourcekite/.build/release/sourcekite"
 }
 ```
 
