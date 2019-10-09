@@ -12,22 +12,31 @@ pronounced: [source kite] :smile:
 
 ## Build Instructions
 
+```bash
+$ git clone https://github.com/vknabel/sourcekite
+$ cd sourcekite
+```
+
 clone this project, then run build command in that project as follow:
 
 ### for Linux
 
-> sudo ln -s /usr/lib/sourcekitdInProc.framework/sourcekitdInProc /usr/lib/sourcekitdInProc
-> make install PREFIX=/usr/local
-
-change the above linking location/option to your own when necessary)
+```bash
+# Ensure you have libcurl4-openssl-dev installed (not pre-installed)
+# $ apt-get update && apt-get install libcurl4-openssl-dev
+# Ensure LD_LIBRARY_PATH contains /your/swift/usr/lib
+# And have $ sudo ln -s /your/swift/usr/lib/libsourcekitdInProc.so /usr/lib/libsourcekitdInProc.so
+# Other PREFIX paths are fine, too
+$ make install PREFIX=/usr/local
+```
 
 For more information see [jpsim/SourceKitten#how-is-sourcekit-resolved](https://github.com/jpsim/SourceKitten#how-is-sourcekit-resolved).
 
 ### for MacOS
 
-> make install
-
-(NOTE: make sure you have installed the swift toolchain into that location. You can do this via [download from offical site](https://swift.org/download/#snapshots) or [swiftenv](https://swiftenv.fuller.li))
+```bash
+$ make install PREFIX=/usr/local
+```
 
 Finally set "swift.path.sourcekite" in vscode to let SDE know the location of this tool. It recommends to add this setting to the gloabl via _"File" -> "Preferences" -> "Settings"_. Like:
 
