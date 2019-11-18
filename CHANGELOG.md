@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.1
+
+Updates SourceKitten. More consistent Swift 5.1 support. #8
+
 ## 0.6.0
 
 Builds on top of SourceKitten. Only supports Swift 5. Easier to install.
