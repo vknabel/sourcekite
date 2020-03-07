@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.2
+
+Exports `sourcekite` as executable product to support [Mint](https://github.com/yonaskolb/Mint).
+
 ## 0.6.1
 
 Updates SourceKitten. More consistent Swift 5.1 support. #8

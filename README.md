@@ -10,7 +10,21 @@ pronounced: [source kite] :smile:
 | 4 and 5       | [0.5.0](https://github.com/vknabel/sourcekite/releases/tag/0.5.0) |
 | 3.1 and 4     | [0.4.2](https://github.com/vknabel/sourcekite/releases/tag/0.4.2) |
 
-## Build Instructions
+## Installation
+
+The easiest way to install sourcekite is through [Mint](https://github.com/yonaskolb/Mint):
+
+```bash
+$ mint install vknabel/sourcekite
+🌱 Cloning sourcekite master
+🌱 Resolving package
+🌱 Building package
+🌱 Installed sourcekite master
+🌱 Linked sourcekite master to /usr/local/bin
+
+```
+
+### Manual
 
 ```bash
 $ git clone https://github.com/vknabel/sourcekite
@@ -19,7 +33,7 @@ $ cd sourcekite
 
 clone this project, then run build command in that project as follow:
 
-### for Linux
+#### for Linux
 
 ```bash
 # Ensure you have libcurl4-openssl-dev installed (not pre-installed)
@@ -32,7 +46,7 @@ $ make install PREFIX=/usr/local
 
 For more information see [jpsim/SourceKitten#how-is-sourcekit-resolved](https://github.com/jpsim/SourceKitten#how-is-sourcekit-resolved).
 
-### for MacOS
+#### for MacOS
 
 ```bash
 $ make install PREFIX=/usr/local
